@@ -5,6 +5,8 @@ email: psychra@seznam.cz
 discord: petrsychra
 """
 
+import sys
+
 TEXTS = ['''
 Situated about 10 miles west of Kemmerer,
 Fossil Butte is a ruggedly impressive
@@ -40,5 +42,30 @@ uzivatele = {
     "liz": "pass123"
 }
 
+cara = "-" * 33
+mozne_volby = [1,2,3] 
+
 uzivatel = input("username:")
 heslo = input("password:")
+
+# ověření uživatele
+if uzivatel in uzivatele.keys() and heslo == uzivatele.get(uzivatel):
+    print(cara)
+    print(f"Vítejte v aplikaci, {uzivatel}")
+else:
+    print("neregistrovaný uživatel, ukončení programu..")
+    sys.exit()
+
+print("Máme 3 texty k analýze.", cara, sep="\n")
+
+cislo_textu = input("Zadejte číslo mezi 1 a 3 pro výběr:")
+
+# ověření volby
+if not cislo_textu.isdigit():
+    print("Chybná volba :-(. Končím..")
+    sys.exit()
+elif int(cislo_textu) not in mozne_volby:
+    print("Chybná volba :-(. Končím")
+    sys.exit()
+else: 
+    print("Tady bude statistika")
