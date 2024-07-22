@@ -43,7 +43,15 @@ uzivatele = {
 }
 
 cara = "-" * 33
-mozne_volby = [1,2,3] 
+mozne_volby = [1,2,3]
+statistika = dict(
+    pocet_slov = 0,
+    zacinajici_velkym = 0,
+    slova_velkym = 0,
+    slova_malym = 0,
+    pocet_cisel = 0,
+    soucet_cisel = 0
+)
 
 uzivatel = input("username:")
 heslo = input("password:")
@@ -67,5 +75,30 @@ if not cislo_textu.isdigit():
 elif int(cislo_textu) not in mozne_volby:
     print("Chybná volba :-(. Končím")
     sys.exit()
-else: 
-    print("Tady bude statistika")
+
+text_k_nalyze = TEXTS[int(cislo_textu) - 1].strip()
+
+# vyplnení statistických údajů 
+for slovo in text_k_nalyze.split():
+    statistika["pocet_slov"] += 1
+    print(slovo, slovo.istitle(), slovo.isupper(), slovo.islower(), slovo.isdigit() )
+    if slovo.istitle():
+        statistika["zacinajici_velkym"] += 1
+    elif slovo.isupper():
+        statistika["slova_velkym"] += 1
+    elif slovo.islower():
+        statistika["slova_malym"] += 1
+    elif slovo.isdigit():
+        statistika["pocet_cisel"] += 1
+        statistika["soucet_cisel"] += int(slovo)
+
+
+print(f"""{cara}
+Je zde {statistika["pocet_slov"]} slov. 
+Je zde {statistika["zacinajici_velkym"]} slov začínajících velkým písmenem. 
+Je zde {statistika["slova_velkym"]} slov psaných velkými písmeny.
+Je zde {statistika["slova_malym"]} slov psaných malými písmeny.
+Je zde {statistika["pocet_cisel"]} čísel.
+Součet všech čísel je {statistika["soucet_cisel"]}.
+{cara}"""
+)
