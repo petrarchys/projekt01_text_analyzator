@@ -1,6 +1,7 @@
 """
 projekt_1.py: první projekt do Engeto Online Datový analytik s Pythonem
-author: Petr Ssychra
+
+author: Petr Sychra
 email: psychra@seznam.cz
 discord: petrsychra
 """
@@ -42,7 +43,7 @@ uzivatele = {
     "liz": "pass123"
 }
 
-cara = "-" * 33
+cara = "-" * 40
 mozne_volby = [1,2,3]
 statistika = dict(
     pocet_slov = 0,
@@ -53,35 +54,35 @@ statistika = dict(
     soucet_cisel = 0
 )
 
+delky_vsech_slov = []
+
 uzivatel = input("username:")
 heslo = input("password:")
 
 # ověření uživatele
 if uzivatel in uzivatele.keys() and heslo == uzivatele.get(uzivatel):
     print(cara)
-    print(f"Vítejte v aplikaci, {uzivatel}")
+    print(f"Welcome to the app, {uzivatel}")
 else:
-    print("neregistrovaný uživatel, ukončení programu..")
+    print("unregistered user, terminating the program..")
     sys.exit()
 
-print("Máme 3 texty k analýze.", cara, sep="\n")
+print("We have 3 texts to be analyzed.", cara, sep="\n")
 
-cislo_textu = input("Zadejte číslo mezi 1 a 3 pro výběr:")
+cislo_textu = input("Enter a number btw. 1 and 3 to select:")
 
 # ověření volby
-if not cislo_textu.isdigit():
-    print("Chybná volba :-(. Končím..")
-    sys.exit()
-elif int(cislo_textu) not in mozne_volby:
-    print("Chybná volba :-(. Končím")
+if not cislo_textu.isdigit() or int(cislo_textu) not in mozne_volby:
+    print("bad choice, terminating the program..")
     sys.exit()
 
 text_k_nalyze = TEXTS[int(cislo_textu) - 1].strip()
 
 # vyplnení statistických údajů 
 for slovo in text_k_nalyze.split():
+    delky_vsech_slov.append(len(slovo))
     statistika["pocet_slov"] += 1
-    print(slovo, slovo.istitle(), slovo.isupper(), slovo.islower(), slovo.isdigit() )
+
     if slovo.istitle():
         statistika["zacinajici_velkym"] += 1
     elif slovo.isupper():
@@ -91,14 +92,28 @@ for slovo in text_k_nalyze.split():
     elif slovo.isdigit():
         statistika["pocet_cisel"] += 1
         statistika["soucet_cisel"] += int(slovo)
-
-
+    
 print(f"""{cara}
-Je zde {statistika["pocet_slov"]} slov. 
-Je zde {statistika["zacinajici_velkym"]} slov začínajících velkým písmenem. 
-Je zde {statistika["slova_velkym"]} slov psaných velkými písmeny.
-Je zde {statistika["slova_malym"]} slov psaných malými písmeny.
-Je zde {statistika["pocet_cisel"]} čísel.
-Součet všech čísel je {statistika["soucet_cisel"]}.
+There are {statistika["pocet_slov"]} words in the selected text. 
+There are {statistika["zacinajici_velkym"]} titlecase words. 
+There are {statistika["slova_velkym"]} uppercase words.
+There are {statistika["slova_malym"]} lowercase words.
+There are {statistika["pocet_cisel"]} numeric strings.
+The sum of all the numbers {statistika["soucet_cisel"]}.
 {cara}"""
 )
+
+delky_vsech_slov.sort()
+delky_slov = set(delky_vsech_slov)  # získání jedinečných délek
+
+# výpis grafu
+hlavicka_grafu = "{:<3} | {:<18} | {:<3}"
+print(hlavicka_grafu.format("LEN", "OCCURENCES", "NR."))
+print(cara)
+
+for delka in delky_slov:
+    pocet = delky_vsech_slov.count(delka)
+    cetnost_graf = "*" * pocet
+    print(f"{delka:>3} | {cetnost_graf:<18} | {pocet:<3}")
+else:
+    print(cara)
