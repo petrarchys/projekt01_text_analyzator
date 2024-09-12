@@ -44,7 +44,10 @@ uzivatele = {
 }
 
 cara = "-" * 40
-mozne_volby = [1,2,3]
+
+pocet_textu = len(TEXTS)
+mozne_volby = list(range(1, pocet_textu + 1))
+
 statistika = dict(
     pocet_slov = 0,
     zacinajici_velkym = 0,
@@ -67,9 +70,9 @@ else:
     print("unregistered user, terminating the program..")
     sys.exit()
 
-print("We have 3 texts to be analyzed.", cara, sep="\n")
+print(f"We have {pocet_textu} texts to be analyzed.", cara, sep="\n")
 
-cislo_textu = input("Enter a number btw. 1 and 3 to select:")
+cislo_textu = input(f"Enter a number btw. 1 and {pocet_textu} to select:")
 
 # ověření volby
 if not cislo_textu.isdigit() or int(cislo_textu) not in mozne_volby:
@@ -80,11 +83,13 @@ text_k_nalyze = TEXTS[int(cislo_textu) - 1].strip()
 
 # vyplnení statistických údajů 
 for slovo in text_k_nalyze.split():
+    slovo = slovo.strip(".,;:-<>/|()[]{}\\")
     delky_vsech_slov.append(len(slovo))
     statistika["pocet_slov"] += 1
 
     if slovo.istitle():
-        statistika["zacinajici_velkym"] += 1
+        if slovo.isalpha():
+            statistika["zacinajici_velkym"] += 1
     elif slovo.isupper():
         statistika["slova_velkym"] += 1
     elif slovo.islower():
