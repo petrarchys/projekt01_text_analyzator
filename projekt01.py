@@ -87,9 +87,8 @@ for slovo in text_k_nalyze.split():
     delky_vsech_slov.append(len(slovo))
     statistika["pocet_slov"] += 1
 
-    if slovo.istitle():
-        if slovo.isalpha():
-            statistika["zacinajici_velkym"] += 1
+    if slovo[0].isupper():
+        statistika["zacinajici_velkym"] += 1
     elif slovo.isupper():
         statistika["slova_velkym"] += 1
     elif slovo.islower():
